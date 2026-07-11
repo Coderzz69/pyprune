@@ -427,7 +427,7 @@ class PackageCleanerApp(tk.Tk):
             graph = PackageGraph.from_pipdeptree_json(payload)
             self._fetch_locations(graph)
         except Exception as exc:  # noqa: BLE001 - surface any subprocess/JSON issue in the GUI.
-            self.after(0, lambda: self.handle_load_error(exc))
+            self.after(0, lambda exc=exc: self.handle_load_error(exc))
             return
         self.after(0, lambda: self.apply_graph(graph, focus_package))
 
