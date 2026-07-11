@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyprune"
+name = "py-package-pruner"
 version = "0.1.0"
 description = "Tkinter GUI for visualizing and cleaning Python package dependencies."
 readme = "README.md"
