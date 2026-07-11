@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyprune"
+version = "0.1.0"
+description = "Tkinter GUI for visualizing and cleaning Python package dependencies."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "coderzz96" }
+]
+keywords = ["pip", "dependencies", "tkinter", "packages", "cleanup", "prune"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: X11 Applications",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Software Distribution",
+]
+dependencies = [
+  "pipdeptree>=2.20",
+]
+
+[project.urls]
+Homepage = "https://github.com/Coderzz69/pyprune"
+Issues = "https://github.com/Coderzz69/pyprune/issues"
+
+[project.scripts]
+pyprune = "pyprune.app:main"
+
+[tool.setuptools]
+packages = ["pyprune"]
