@@ -1,6 +1,6 @@
 """Run the PyPrune GUI with python -m pyprune."""
 
-from .app import main
+from .cli import main
 
 
 if __name__ == "__main__":
