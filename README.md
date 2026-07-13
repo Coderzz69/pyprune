@@ -52,6 +52,49 @@ sudo apt install python3-tk
 - Uses clickable checkbox markers to keep or mark packages for deletion.
 - Warns before marking packages that other packages depend on.
 - Uninstalls marked packages with `python -m pip uninstall -y`.
+- Scans directories for virtual environments (`pyprune --root`).
+- Inspects any venv without requiring pipdeptree to be installed in it.
+
+## Project Structure
+
+```
+pyprune/
+├── __init__.py            # Public API re-exports
+├── __main__.py            # python -m pyprune entrypoint
+├── cli.py                 # Argument parsing & main()
+├── models.py              # PackageInfo and PackageGraph data models
+├── subprocess_runner.py   # Subprocess calls with timeouts & validation
+├── scanner.py             # Virtual environment discovery
+└── ui/
+    ├── __init__.py
+    ├── app.py             # Main application window (orchestrator)
+    ├── toolbar.py         # Toolbar and legend widgets
+    ├── tree_view.py       # Package tree widget
+    └── detail_panel.py    # Package details panel
+```
+
+| Module | Responsibility |
+|--------|---------------|
+| `models.py` | Pure data — `PackageInfo` dataclass and `PackageGraph` dependency graph. No UI or subprocess dependencies. |
+| `subprocess_runner.py` | All external process calls (`pipdeptree`, `pip list`, `pip uninstall`). Adds timeouts, path validation, and package name sanitization. |
+| `scanner.py` | Filesystem scanning to find `.venv`/`venv` directories. Includes path-traversal protection via symlink resolution. |
+| `cli.py` | CLI argument parsing (`--root`, path positional) and the `main()` entrypoint. |
+| `ui/app.py` | `PackageCleanerApp(tk.Tk)` — composes the UI widgets, manages application state, and coordinates background threads. |
+| `ui/toolbar.py` | `ToolbarFrame` (buttons, search) and `LegendFrame` (colour-coded role labels). Callback-driven, no parent coupling. |
+| `ui/tree_view.py` | `PackageTreeView` — Treeview with scrollbars, package insertion, filtering, checkbox toggling, and scan display. |
+| `ui/detail_panel.py` | `DetailPanel` — side panel showing package metadata, dependencies, and venv info. |
+
+## Security
+
+- **Subprocess timeouts** — all subprocess calls have a 60-second timeout to
+  prevent hangs from broken interpreters or network issues.
+- **Path validation** — Python executable paths are verified to exist and be
+  regular files before being passed to `subprocess.run`.
+- **Package name sanitization** — names are validated against
+  `^[A-Za-z0-9._-]+$` before being passed to `pip uninstall`.
+- **Path-traversal protection** — venv scanning resolves symlinks and ensures
+  traversed paths stay within the original scan root.
+- **No shell execution** — all subprocess calls use `shell=False`.
 
 ## Publish
 

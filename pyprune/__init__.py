@@ -1,6 +1,8 @@
 """PyPrune – Python package dependency cleaner GUI."""
 
-from .app import PackageCleanerApp, PackageGraph, PackageInfo, main
+from .cli import main
+from .models import PackageGraph, PackageInfo
+from .ui.app import PackageCleanerApp
 
 __all__ = ["PackageCleanerApp", "PackageGraph", "PackageInfo", "main"]
 __version__ = "0.1.0"
